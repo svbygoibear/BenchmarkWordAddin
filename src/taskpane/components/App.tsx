@@ -1,60 +1,34 @@
 import * as React from "react";
 import { Button, ButtonType } from "office-ui-fabric-react";
 import Header from "./Header";
-import HeroList, { HeroListItem } from "./HeroList";
 import Progress from "./Progress";
-/* global Button Header, HeroList, HeroListItem, Progress, Word */
 
 export interface AppProps {
   title: string;
   isOfficeInitialized: boolean;
 }
 
-export interface AppState {
-  listItems: HeroListItem[];
-}
+export interface AppState {}
 
 export default class App extends React.Component<AppProps, AppState> {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      listItems: []
-    };
+    this.state = {};
   }
 
-  componentDidMount() {
-    this.setState({
-      listItems: [
-        {
-          icon: "Ribbon",
-          primaryText: "Achieve more with Office integration"
-        },
-        {
-          icon: "Unlock",
-          primaryText: "Unlock features and functionality"
-        },
-        {
-          icon: "Design",
-          primaryText: "Create and visualize like a pro"
-        }
-      ]
-    });
-  }
+  componentDidMount() {}
 
   click = async () => {
-    return Word.run(async context => {
-      /**
-       * Insert your Word code here
-       */
-
-      // insert a paragraph at the end of the document.
-      const paragraph = context.document.body.insertParagraph("Hello World", Word.InsertLocation.end);
-
-      // change the paragraph color to blue.
-      paragraph.font.color = "blue";
-
-      await context.sync();
-    });
+    // return Word.run(async context => {
+    //   /**
+    //    * Insert your Word code here
+    //    */
+    //   // insert a paragraph at the end of the document.
+    //   const paragraph = context.document.body.insertParagraph("Hello World", Word.InsertLocation.end);
+    //   // change the paragraph color to blue.
+    //   paragraph.font.color = "blue";
+    //   await context.sync();
+    // });
   };
 
   render() {
@@ -69,7 +43,7 @@ export default class App extends React.Component<AppProps, AppState> {
     return (
       <div className="ms-welcome">
         <Header logo="assets/logo-filled.png" title={this.props.title} message="Welcome" />
-        <HeroList message="Discover what Office Add-ins can do for you today!" items={this.state.listItems}>
+        <main className="ms-welcome__main">
           <p className="ms-font-l">
             Modify the source files, then click <b>Run</b>.
           </p>
@@ -79,9 +53,9 @@ export default class App extends React.Component<AppProps, AppState> {
             iconProps={{ iconName: "ChevronRight" }}
             onClick={this.click}
           >
-            Run
+            Text-Binding
           </Button>
-        </HeroList>
+        </main>
       </div>
     );
   }
