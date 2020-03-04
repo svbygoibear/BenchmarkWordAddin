@@ -18,27 +18,27 @@ export default class App extends React.Component<AppProps, null> {
   }
 
   public componentDidMount() {
-    Office.context.document.addHandlerAsync(
-      Office.EventType.BindingDataChanged,
-      "bindingDataChanged",
-      this.whenBindingDataChanged
-    );
-    Office.context.document.addHandlerAsync(
-      Office.EventType.BindingSelectionChanged,
-      "bindingSelectionChanged",
-      this.whenBindingSelected
-    );
+    // Office.context.document.addHandlerAsync(
+    //   Office.EventType.BindingDataChanged,
+    //   "bindingDataChanged",
+    //   this.whenBindingDataChanged
+    // );
+    // Office.context.document.addHandlerAsync(
+    //   Office.EventType.BindingSelectionChanged,
+    //   "bindingSelectionChanged",
+    //   this.whenBindingSelected
+    // );
   }
 
-  private whenBindingDataChanged = (value: any): void => {
-    console.log("whenBindingDataChanged");
-    console.log(value);
-  };
+  // private whenBindingDataChanged = (value: any): void => {
+  //   console.log("whenBindingDataChanged");
+  //   console.log(value);
+  // };
 
-  private whenBindingSelected = (value: any): void => {
-    console.log("whenBindingSelected");
-    console.log(value);
-  };
+  // private whenBindingSelected = (value: any): void => {
+  //   console.log("whenBindingSelected");
+  //   console.log(value);
+  // };
 
   private textBindingClick = async () => {
     Office.context.document.bindings.addFromSelectionAsync(
@@ -78,7 +78,7 @@ export default class App extends React.Component<AppProps, null> {
         <Header logo="assets/logo-filled.png" title={this.props.title} message="Welcome" />
         <main className="ms-welcome__main">
           <p className="ms-font-l">
-            Modify the source files, then click <b>Run</b>.
+            To test out the features, click on any <b>Button</b>.
           </p>
           <Button
             className="ms-welcome__action"
