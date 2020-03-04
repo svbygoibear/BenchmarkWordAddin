@@ -17,7 +17,28 @@ export default class App extends React.Component<AppProps, null> {
     // this.state = {};
   }
 
-  // public componentDidMount() {}
+  public componentDidMount() {
+    Office.context.document.addHandlerAsync(
+      Office.EventType.BindingDataChanged,
+      "bindingDataChanged",
+      this.whenBindingDataChanged
+    );
+    Office.context.document.addHandlerAsync(
+      Office.EventType.BindingSelectionChanged,
+      "bindingSelectionChanged",
+      this.whenBindingSelected
+    );
+  }
+
+  private whenBindingDataChanged = (value: any): void => {
+    console.log("whenBindingDataChanged");
+    console.log(value);
+  };
+
+  private whenBindingSelected = (value: any): void => {
+    console.log("whenBindingSelected");
+    console.log(value);
+  };
 
   private textBindingClick = async () => {
     Office.context.document.bindings.addFromSelectionAsync(
@@ -31,6 +52,16 @@ export default class App extends React.Component<AppProps, null> {
         }
       }
     );
+  };
+
+  private getSelectedTextClick = async () => {
+    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text, asyncResult => {
+      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+        console.log("Action failed. Error: " + asyncResult.error.message);
+      } else {
+        console.log("Selected data: " + asyncResult.value);
+      }
+    });
   };
 
   public render() {
@@ -56,6 +87,14 @@ export default class App extends React.Component<AppProps, null> {
             onClick={this.textBindingClick}
           >
             Text-Binding
+          </Button>
+          <Button
+            className="ms-welcome__action"
+            buttonType={ButtonType.hero}
+            iconProps={{ iconName: "ChevronRight" }}
+            onClick={this.getSelectedTextClick}
+          >
+            Get Selected Data
           </Button>
         </main>
       </div>
