@@ -9,25 +9,24 @@ export interface AppProps {
   isOfficeInitialized: boolean;
 }
 
-// export interface AppState {}
-
 export default class App extends React.Component<AppProps, null> {
   constructor(props, context) {
     super(props, context);
-    // this.state = {};
   }
 
   public componentDidMount() {
-    // Office.context.document.addHandlerAsync(
-    //   Office.EventType.BindingDataChanged,
-    //   "bindingDataChanged",
-    //   this.whenBindingDataChanged
-    // );
-    // Office.context.document.addHandlerAsync(
-    //   Office.EventType.BindingSelectionChanged,
-    //   "bindingSelectionChanged",
-    //   this.whenBindingSelected
-    // );
+    if (Office.context) {
+      // Office.context.document.addHandlerAsync(
+      //   Office.EventType.BindingDataChanged,
+      //   "bindingDataChanged",
+      //   this.whenBindingDataChanged
+      // );
+      // Office.context.document.addHandlerAsync(
+      //   Office.EventType.BindingSelectionChanged,
+      //   "bindingSelectionChanged",
+      //   this.whenBindingSelected
+      // );
+    }
   }
 
   // private whenBindingDataChanged = (value: any): void => {
@@ -59,7 +58,17 @@ export default class App extends React.Component<AppProps, null> {
       if (asyncResult.status === Office.AsyncResultStatus.Failed) {
         console.log("Action failed. Error: " + asyncResult.error.message);
       } else {
-        console.log("Selected data: " + asyncResult.value);
+        const selectedText = asyncResult.value as string;
+        console.log("Selected data: " + selectedText);
+        this.write(`${selectedText.trimRight()}  I am the potato to the potato`);
+      }
+    });
+  };
+
+  private write = (message: string): void => {
+    Office.context.document.setSelectedDataAsync(message, asyncResult => {
+      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+        console.log(asyncResult.error.message);
       }
     });
   };
