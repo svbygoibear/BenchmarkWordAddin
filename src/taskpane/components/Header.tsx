@@ -7,7 +7,7 @@ export interface HeaderProps {
 }
 
 export default class Header extends React.Component<HeaderProps> {
-  render() {
+  public render() {
     const { title, logo, message } = this.props;
 
     return (

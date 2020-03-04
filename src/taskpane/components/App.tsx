@@ -8,30 +8,31 @@ export interface AppProps {
   isOfficeInitialized: boolean;
 }
 
-export interface AppState {}
+// export interface AppState {}
 
-export default class App extends React.Component<AppProps, AppState> {
+export default class App extends React.Component<AppProps, null> {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    // this.state = {};
   }
 
-  componentDidMount() {}
+  // public componentDidMount() {}
 
-  click = async () => {
-    // return Word.run(async context => {
-    //   /**
-    //    * Insert your Word code here
-    //    */
-    //   // insert a paragraph at the end of the document.
-    //   const paragraph = context.document.body.insertParagraph("Hello World", Word.InsertLocation.end);
-    //   // change the paragraph color to blue.
-    //   paragraph.font.color = "blue";
-    //   await context.sync();
-    // });
+  private textBindingClick = async () => {
+    Office.context.document.bindings.addFromSelectionAsync(
+      Office.BindingType.Text,
+      { id: "myBinding" },
+      asyncResult => {
+        if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+          console.log("Action failed. Error: " + asyncResult.error.message);
+        } else {
+          console.log("Added new binding with type: " + asyncResult.value.type + " and id: " + asyncResult.value.id);
+        }
+      }
+    );
   };
 
-  render() {
+  public render() {
     const { title, isOfficeInitialized } = this.props;
 
     if (!isOfficeInitialized) {
@@ -51,7 +52,7 @@ export default class App extends React.Component<AppProps, AppState> {
             className="ms-welcome__action"
             buttonType={ButtonType.hero}
             iconProps={{ iconName: "ChevronRight" }}
-            onClick={this.click}
+            onClick={this.textBindingClick}
           >
             Text-Binding
           </Button>
