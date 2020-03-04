@@ -2,6 +2,7 @@ import * as React from "react";
 import { Button, ButtonType } from "office-ui-fabric-react";
 import Header from "./Header";
 import Progress from "./Progress";
+import * as GeneralUtils from "./../../utilities/general";
 
 export interface AppProps {
   title: string;
@@ -21,7 +22,7 @@ export default class App extends React.Component<AppProps, null> {
   private textBindingClick = async () => {
     Office.context.document.bindings.addFromSelectionAsync(
       Office.BindingType.Text,
-      { id: "myBinding" },
+      { id: GeneralUtils.generateUuid() },
       asyncResult => {
         if (asyncResult.status === Office.AsyncResultStatus.Failed) {
           console.log("Action failed. Error: " + asyncResult.error.message);
