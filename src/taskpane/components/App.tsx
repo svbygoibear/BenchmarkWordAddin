@@ -45,15 +45,7 @@ export default class App extends React.Component<AppProps, null> {
   };
 
   private getSelectedTextClick = async () => {
-    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text, asyncResult => {
-      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-        console.log("Action failed. Error: " + asyncResult.error.message);
-      } else {
-        const selectedText = asyncResult.value as string;
-        console.log("Selected data: " + selectedText);
-        this.write(`${selectedText.trimRight()}  I am an intelligent answer to a question`);
-      }
-    });
+    OfficeUtils.getTextFromSelection();
   };
 
   private write = (message: string): void => {
