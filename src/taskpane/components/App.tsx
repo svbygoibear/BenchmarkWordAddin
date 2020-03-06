@@ -3,6 +3,7 @@ import { Button, ButtonType } from "office-ui-fabric-react";
 import Header from "./Header";
 import Progress from "./Progress";
 import * as GeneralUtils from "./../../utilities/general";
+import * as OfficeUtils from "../../utilities/office";
 
 export interface AppProps {
   title: string;
@@ -40,6 +41,31 @@ export default class App extends React.Component<AppProps, null> {
   // };
 
   private textBindingClick = async () => {
+    OfficeUtils.addBindingFromSelection();
+  };
+
+  private getSelectedTextClick = async () => {
+    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text, asyncResult => {
+      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+        console.log("Action failed. Error: " + asyncResult.error.message);
+      } else {
+        const selectedText = asyncResult.value as string;
+        console.log("Selected data: " + selectedText);
+        this.write(`${selectedText.trimRight()}  I am an intelligent answer to a question`);
+      }
+    });
+  };
+
+  private write = (message: string): void => {
+    Office.context.document.setSelectedDataAsync(message, asyncResult => {
+      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+        console.log(asyncResult.error.message);
+      }
+    });
+  };
+
+  private doCombo = async () => {
+    // test
     Office.context.document.bindings.addFromSelectionAsync(
       Office.BindingType.Text,
       { id: GeneralUtils.generateUuid() },
@@ -51,26 +77,6 @@ export default class App extends React.Component<AppProps, null> {
         }
       }
     );
-  };
-
-  private getSelectedTextClick = async () => {
-    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text, asyncResult => {
-      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-        console.log("Action failed. Error: " + asyncResult.error.message);
-      } else {
-        const selectedText = asyncResult.value as string;
-        console.log("Selected data: " + selectedText);
-        this.write(`${selectedText.trimRight()}  I am the potato to the potato`);
-      }
-    });
-  };
-
-  private write = (message: string): void => {
-    Office.context.document.setSelectedDataAsync(message, asyncResult => {
-      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-        console.log(asyncResult.error.message);
-      }
-    });
   };
 
   public render() {
@@ -89,21 +95,16 @@ export default class App extends React.Component<AppProps, null> {
           <p className="ms-font-l">
             To test out the features, click on any <b>Button</b>.
           </p>
-          <Button
-            className="ms-welcome__action"
-            buttonType={ButtonType.hero}
-            iconProps={{ iconName: "ChevronRight" }}
-            onClick={this.textBindingClick}
-          >
+          <Button className="ms-welcome__action" buttonType={ButtonType.hero} onClick={this.textBindingClick}>
             Text-Binding
           </Button>
-          <Button
-            className="ms-welcome__action"
-            buttonType={ButtonType.hero}
-            iconProps={{ iconName: "ChevronRight" }}
-            onClick={this.getSelectedTextClick}
-          >
+          <br />
+          <Button className="ms-welcome__action" buttonType={ButtonType.hero} onClick={this.getSelectedTextClick}>
             Get Selected Data
+          </Button>
+          <br />
+          <Button className="ms-welcome__action" buttonType={ButtonType.hero} onClick={this.doCombo}>
+            Get Selected, Bind, Answer
           </Button>
         </main>
       </div>
