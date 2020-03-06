@@ -40,21 +40,26 @@ export default class App extends React.Component<AppProps, null> {
   //   console.log(value);
   // };
 
+  private getSelectedText = async () => {
+    const textTest = await OfficeUtils.getTextFromSelection();
+    console.log(textTest);
+  };
+
   private textBindingClick = async () => {
-    OfficeUtils.addBindingFromSelection();
+    OfficeUtils.addBindingFromSelection(this.getSelectedText);
   };
 
   private getSelectedTextClick = async () => {
     OfficeUtils.getTextFromSelection();
   };
 
-  private write = (message: string): void => {
-    Office.context.document.setSelectedDataAsync(message, asyncResult => {
-      if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-        console.log(asyncResult.error.message);
-      }
-    });
-  };
+  // private write = (message: string): void => {
+  //   Office.context.document.setSelectedDataAsync(message, asyncResult => {
+  //     if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+  //       console.log(asyncResult.error.message);
+  //     }
+  //   });
+  // };
 
   private doCombo = async () => {
     // test
